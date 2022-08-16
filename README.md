@@ -1,6 +1,6 @@
 # RealtimePoll
 
-A simple real-time polling application which users create a poll and vote. 
+A simple real-time poll application which users create a poll and vote.
 
 ## Screenshots
 ![1](./Screenshots/Screenshot_1.png)
