@@ -1,4 +1,4 @@
-# RealtimePoll
+# Realtime Poll
 
 A simple real-time poll application which users create a poll and vote.
 
