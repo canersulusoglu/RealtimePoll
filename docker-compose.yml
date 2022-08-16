@@ -1,0 +1,43 @@
+version: '3.4'
+services:
+  realtime-polling-server:
+    container_name: RealtimePolling_App_Server
+    build:
+      context: ./Server
+    ports:
+      - ${REALTIME_POLLING_SERVER_PORT}:${REALTIME_POLLING_SERVER_PORT}
+    environment:
+      - PORT=${REALTIME_POLLING_SERVER_PORT}
+      - REDIS_DOMAIN_NAME=redis-pubsub-server
+      - REDIS_PORT=${REALTIME_POLLING_REDIS_PUBSUB_PORT}
+      - MONGODB_URI=mongodb://mongodb-server:${REALTIME_POLLING_MONGODB_PORT}/realtimePollingApp
+    depends_on:
+      - redis-pubsub-server
+      - mongodb-server
+  realtime-polling-client:
+    container_name: RealtimePolling_App_Client
+    build:
+      context: ./Client
+    ports:
+      - ${REALTIME_POLLING_CLIENT_PORT}:${REALTIME_POLLING_CLIENT_PORT}
+    environment:
+      - PORT=${REALTIME_POLLING_CLIENT_PORT}
+    depends_on:
+      - realtime-polling-server
+  redis-pubsub-server:
+    container_name: RealtimePolling_App_Redis_PubSub
+    image: redis:7-bullseye
+    restart: always
+    ports:
+      - '${REALTIME_POLLING_REDIS_PUBSUB_PORT}:${REALTIME_POLLING_REDIS_PUBSUB_PORT}'
+  mongodb-server:
+    container_name: RealtimePolling_App_MongoDB_Server
+    image: mongo:5.0.10
+    restart: always
+    ports:
+      - ${REALTIME_POLLING_MONGODB_PORT}:${REALTIME_POLLING_MONGODB_PORT}
+    volumes:
+      - database:/data/db
+
+volumes:
+  database:

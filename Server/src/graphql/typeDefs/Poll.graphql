@@ -1,0 +1,42 @@
+type Poll {
+    _id: ID!
+    title: String!
+    options: [Option!]!
+    createdAt: String!
+    updatedAt: String!
+}
+
+type Option {
+    _id: ID!
+    name: String!
+    count: Int!
+}
+
+input OptionInput {
+    name: String!
+}
+
+type GetPollsOutput {
+    polls: [Poll!]
+    totalCount: Int!
+}
+
+type PollVotedOutput {
+    _id: ID!
+    option: Option!
+}
+
+type Query {
+    polls(itemPerPage: Int!, pageNumber: Int!) : GetPollsOutput
+    poll(id: ID!) : Poll
+}
+
+type Mutation {
+    createPoll(title: String!, options: [OptionInput!]!) : Poll!
+    votePoll(pollId: ID!, optionId: ID!) : Boolean!
+}
+
+type Subscription {
+    pollCreated: Poll!
+    pollVoted(pollId: ID!): PollVotedOutput!
+}
